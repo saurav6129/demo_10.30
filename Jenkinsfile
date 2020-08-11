@@ -6,31 +6,47 @@ pipeline {
 		
 		stage("build") {
 			
+			when {
+				expression{
+					env.BRANCH_NAME =='master' || env.BRANCH_NAME == 'test'
+				}
+			}
 			
-			 steps {
+			steps {
 				echo 'building the application...'
 			
-			 }
+			}
 		}
-		
 		stage("test") {
 
 
+			when {
+				expression{
+					env.BRANCH_NAME =='test'
+				} 
+			}
 			
-			
-			 steps {
-				echo 'testing the application...'
-			 }
+			steps {
+				echo 'testing the application on the test stage...'
+				echo 'testing on the test branch only'
+			}
 		}
 		
 	
 		stage("deploy") {
+		
+			when {
+				expression{
+					env.BRANCH_NAME =='master'
+				} 
+			}
 			
-			
-			 steps {
-				echo 'deploying the application...'
+			steps {
+				echo 'deploying the application on the final stage ...'
 			}
 		}
+		
+
 	}
 
 }
